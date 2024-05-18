@@ -1,8 +1,8 @@
 require "game_sf"
 
-require "./game_sf_template/game"
+require "./rpg/game"
 
-module GameSFTemplate
+module RPG
   alias Keys = GSF::Keys
   alias Mouse = GSF::Mouse
   alias Joysticks = GSF::Joysticks

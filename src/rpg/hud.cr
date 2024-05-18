@@ -1,6 +1,6 @@
 require "./font"
 
-module GameSFTemplate
+module RPG
   class HUD
     getter text
 
