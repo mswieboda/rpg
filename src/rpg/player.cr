@@ -5,8 +5,8 @@ module RPG
     getter animations
 
     AnimationFPS = 8
-    Size = 128
-    Speed = 640
+    Size = 64
+    Speed = 320
     Sheet = "./assets/player.png"
 
     def initialize(x = 0, y = 0)
@@ -14,21 +14,26 @@ module RPG
       @x = x
       @y = y
 
-      # init animations
       # idle
       idle = GSF::Animation.new(AnimationFPS, loops: false)
       idle.add(Sheet, 0, 0, size, size)
 
-      # fire animation
-      fire_frames = 3
-      fire = GSF::Animation.new(AnimationFPS, loops: false)
+      @animations = GSF::Animations.new(:idle, idle)
 
-      fire_frames.times do |i|
-        fire.add(Sheet, i * size, 0, size, size)
+      init_animations
+    end
+
+    def init_animations
+      # idle animation
+      idle_animation_frames = 9
+      idle_animation = GSF::Animation.new(AnimationFPS, loops: false)
+
+      idle_animation_frames.times do |i|
+        idle_animation.add(Sheet, i * size, 0, size, size)
       end
 
-      @animations = GSF::Animations.new(:idle, idle)
-      animations.add(:fire, fire)
+      animations.add(:idle_animation, idle_animation)
+      animations.play(:idle_animation)
     end
 
     def size
