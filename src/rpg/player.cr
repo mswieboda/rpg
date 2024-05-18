@@ -8,6 +8,7 @@ module RPG
     Size = 64
     Speed = 320
     Sheet = "./assets/player.png"
+    ShadowColor = SF::Color.new(31, 31, 31)
 
     def initialize(x = 0, y = 0)
       # sprite size
@@ -87,8 +88,24 @@ module RPG
       @y += dy
     end
 
+    def jump(x, y)
+      @x = x
+      @y = y
+    end
+
     def draw(window : SF::RenderWindow)
-      animations.draw(window, x, y)
+      draw_shadow(window)
+      animations.draw(window, x, y - size / 2)
+    end
+
+    def draw_shadow(window)
+      radius = size / 4
+      circle = SF::CircleShape.new(radius)
+      circle.fill_color = ShadowColor
+      circle.position = {x, y}
+      circle.origin = {radius, radius}
+
+      window.draw(circle)
     end
   end
 end
