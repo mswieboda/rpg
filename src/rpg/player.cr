@@ -38,16 +38,22 @@ module RPG
     end
 
     def init_animations
-      # idle animation
-      idle_animation_frames = 2
-      idle_animation = GSF::Animation.new(60, loops: true)
+      row_index = 0
+      animations.add(:walk_down, animation(2, row_index))
+      row_index += 1
+      animations.add(:walk_up, animation(2, row_index))
 
-      idle_animation_frames.times do |i|
-        idle_animation.add(Sheet, i * SpriteWidth, 0, SpriteWidth, SpriteHeight)
+      animations.play(:walk_down)
+    end
+
+    def animation(frames, row_index, fps_factor = 30, loops = true)
+      animation = GSF::Animation.new(fps_factor, loops: loops)
+
+      frames.times do |i|
+        animation.add(Sheet, i * SpriteWidth, row_index * SpriteHeight, SpriteWidth, SpriteHeight)
       end
 
-      animations.add(:idle_animation, idle_animation)
-      animations.play(:idle_animation)
+      animation
     end
 
     def size
@@ -55,9 +61,8 @@ module RPG
     end
 
     def update(frame_time, keys : Keys)
-      animations.update(frame_time)
-
       update_movement(frame_time, keys)
+      animations.update(frame_time)
     end
 
     def update_movement(frame_time, keys : Keys)
@@ -75,6 +80,12 @@ module RPG
       dx, dy = move_with_level(dx, dy)
 
       return if dx == 0 && dy == 0
+
+      if dy > 0
+        animations.play(:walk_down)
+      elsif dy < 0
+        animations.play(:walk_up)
+      end
 
       move(dx, dy)
     end
