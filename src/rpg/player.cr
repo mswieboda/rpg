@@ -5,7 +5,6 @@ module RPG
     getter animations
     getter shadow_sprite : SF::Sprite
 
-    AnimationFPS = 8
     Size = 64
     SpriteWidth = 64
     SpriteHeight = 96
@@ -13,6 +12,7 @@ module RPG
     Sheet = "./assets/player.png"
     ShadowSprite = "./assets/shadow.png"
 
+    BodyColor = SF::Color.new(217, 160, 102)
     ShadowColor = SF::Color.new(0, 0, 0, 63)
     ShadowDropColor = SF::Color.new(0, 0, 0, 127)
 
@@ -22,7 +22,7 @@ module RPG
       @y = y
 
       # animations
-      idle = GSF::Animation.new(AnimationFPS, loops: false)
+      idle = GSF::Animation.new(2, loops: false)
       idle.add(Sheet, 0, 0, SpriteWidth, SpriteHeight)
 
       @animations = GSF::Animations.new(:idle, idle)
@@ -39,8 +39,8 @@ module RPG
 
     def init_animations
       # idle animation
-      idle_animation_frames = 1
-      idle_animation = GSF::Animation.new(AnimationFPS, loops: false)
+      idle_animation_frames = 2
+      idle_animation = GSF::Animation.new(60, loops: true)
 
       idle_animation_frames.times do |i|
         idle_animation.add(Sheet, i * SpriteWidth, 0, SpriteWidth, SpriteHeight)
@@ -108,7 +108,7 @@ module RPG
 
     def draw(window : SF::RenderWindow)
       draw_shadow(window)
-      animations.draw(window, x, y - SpriteHeight / 2)
+      animations.draw(window, x, y - SpriteHeight / 2, color: BodyColor)
     end
 
     def draw_shadow(window)
