@@ -3,34 +3,47 @@ module RPG
     getter x : Int32 | Float32
     getter y : Int32 | Float32
     getter animations
+    getter shadow_sprite : SF::Sprite
 
     AnimationFPS = 8
     Size = 64
+    SpriteWidth = 64
+    SpriteHeight = 96
     Speed = 320
     Sheet = "./assets/player.png"
-    ShadowColor = SF::Color.new(31, 31, 31)
+    ShadowSprite = "./assets/shadow.png"
+
+    ShadowColor = SF::Color.new(0, 0, 0, 63)
+    ShadowDropColor = SF::Color.new(0, 0, 0, 127)
 
     def initialize(x = 0, y = 0)
       # sprite size
       @x = x
       @y = y
 
-      # idle
+      # animations
       idle = GSF::Animation.new(AnimationFPS, loops: false)
-      idle.add(Sheet, 0, 0, size, size)
+      idle.add(Sheet, 0, 0, SpriteWidth, SpriteHeight)
 
       @animations = GSF::Animations.new(:idle, idle)
 
       init_animations
+
+      # shadow sprite
+      texture = SF::Texture.from_file(ShadowSprite)
+      texture.smooth = false
+
+      @shadow_sprite = SF::Sprite.new(texture)
+      @shadow_sprite.origin = texture.size / 2.0
     end
 
     def init_animations
       # idle animation
-      idle_animation_frames = 9
+      idle_animation_frames = 1
       idle_animation = GSF::Animation.new(AnimationFPS, loops: false)
 
       idle_animation_frames.times do |i|
-        idle_animation.add(Sheet, i * size, 0, size, size)
+        idle_animation.add(Sheet, i * SpriteWidth, 0, SpriteWidth, SpriteHeight)
       end
 
       animations.add(:idle_animation, idle_animation)
@@ -95,17 +108,13 @@ module RPG
 
     def draw(window : SF::RenderWindow)
       draw_shadow(window)
-      animations.draw(window, x, y - size / 2)
+      animations.draw(window, x, y - SpriteHeight / 2)
     end
 
     def draw_shadow(window)
-      radius = size / 4
-      circle = SF::CircleShape.new(radius)
-      circle.fill_color = ShadowColor
-      circle.position = {x, y}
-      circle.origin = {radius, radius}
+      shadow_sprite.position = {x, y}
 
-      window.draw(circle)
+      window.draw(shadow_sprite)
     end
   end
 end

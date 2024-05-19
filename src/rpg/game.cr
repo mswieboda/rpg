@@ -5,7 +5,6 @@ module RPG
     getter manager
 
     def initialize
-      mode = SF::VideoMode.desktop_mode
       style = SF::Style::None
 
       {% if flag?(:linux) %}
@@ -15,7 +14,7 @@ module RPG
         style = SF::Style::Default
       {% end %}
 
-      super(title: "RPG", mode: mode, style: style)
+      super(title: "RPG", style: style)
 
       @stage = Stage.new(window)
     end

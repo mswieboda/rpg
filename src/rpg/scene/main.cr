@@ -37,7 +37,12 @@ module RPG::Scene
     end
 
     def draw(window)
+      view.set_current
+
       level.draw(window)
+
+      view.set_default_current
+
       hud.draw(window)
     end
   end
