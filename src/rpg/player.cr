@@ -38,22 +38,33 @@ module RPG
     end
 
     def init_animations
-      row_index = 0
-      animations.add(:walk_down, animation(2, row_index))
-      row_index += 1
-      animations.add(:walk_up, animation(2, row_index))
+      frames = 2
+      fps_factor = 30
+      loops = true
+
+      [:walk_down, :walk_up, :walk_left].each_with_index do |name, row|
+        add_animation(name, row, frames, fps_factor, loops)
+      end
+
+      add_animation(:walk_right, 2, frames, fps_factor, loops, flip_horizontal: true)
 
       animations.play(:walk_down)
     end
 
-    def animation(frames, row_index, fps_factor = 30, loops = true)
+    def add_animation(name, row, frames, fps_factor, loops, flip_horizontal = false)
       animation = GSF::Animation.new(fps_factor, loops: loops)
 
       frames.times do |i|
-        animation.add(Sheet, i * SpriteWidth, row_index * SpriteHeight, SpriteWidth, SpriteHeight)
+        animation.add(
+          filename: Sheet,
+          x: i * SpriteWidth,
+          y: row * SpriteHeight,
+          width: SpriteWidth,
+          height: SpriteHeight
+        )
       end
 
-      animation
+      animations.add(name, animation, flip_horizontal: flip_horizontal)
     end
 
     def size
@@ -107,6 +118,10 @@ module RPG
         animations.play(:walk_down)
       elsif dy < 0
         animations.play(:walk_up)
+      elsif dx > 0
+        animations.play(:walk_right)
+      elsif dx < 0
+        animations.play(:walk_left)
       end
     end
 
