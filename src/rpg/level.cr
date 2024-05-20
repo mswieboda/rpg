@@ -18,10 +18,7 @@ module RPG
     end
 
     def start
-      player.jump(
-        player_row * tile_size + (tile_size / 2).to_f32,
-        player_col * tile_size + (tile_size / 2).to_f32
-      )
+      player.jump_to_tile(player_row, player_col, tile_size)
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
