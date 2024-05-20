@@ -81,12 +81,7 @@ module RPG
 
       return if dx == 0 && dy == 0
 
-      if dy > 0
-        animations.play(:walk_down)
-      elsif dy < 0
-        animations.play(:walk_up)
-      end
-
+      animate_move(dx, dy)
       move(dx, dy)
     end
 
@@ -105,6 +100,14 @@ module RPG
       dy = 0 if y + dy < 0 || y + dy + size > Screen.height
 
       {dx, dy}
+    end
+
+    def animate_move(dx, dy)
+      if dy > 0
+        animations.play(:walk_down)
+      elsif dy < 0
+        animations.play(:walk_up)
+      end
     end
 
     def move(dx, dy)
