@@ -71,17 +71,16 @@ module RPG
       Size
     end
 
-    def update(frame_time)
-      animations.update(frame_time)
+    def collision_width
+      size
     end
 
-    def move_with_speed(frame_time, dx, dy)
-      speed = Speed
-      directional_speed = dx != 0 && dy != 0 ? speed / 1.4142 : speed
-      dx *= (directional_speed * frame_time).to_f32
-      dy *= (directional_speed * frame_time).to_f32
+    def collision_height
+      size / 2
+    end
 
-      {dx, dy}
+    def update(frame_time)
+      animations.update(frame_time)
     end
 
     def animate_move(dx, dy)

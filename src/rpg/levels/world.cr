@@ -3,6 +3,7 @@ require "../level"
 module RPG::Levels
   class World < RPG::Level
     getter characters : Array(Character)
+    getter sound_bump : SF::Sound
 
     TileColor = SF::Color.new(0, 128, 0)
 
@@ -10,6 +11,7 @@ module RPG::Levels
       super(player, rows: 19, cols: 19, player_row: 9, player_col: 9)
 
       @characters = [] of Character
+      @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file("./assets/bump.ogg"))
     end
 
     def start
@@ -28,6 +30,29 @@ module RPG::Levels
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
       characters.each(&.update(frame_time))
       player.update(frame_time, keys)
+      player_collision_checks
+    end
+
+    def player_collision_checks
+      characters.each do |char|
+        collision_x, collision_y = player.collision(char)
+
+        if collision_x || collision_y
+          player.move(-player.dx, 0) if collision_x
+          player.move(0, -player.dy) if collision_y
+
+          play_bump_sound
+
+          break
+        end
+      end
+    end
+
+    def play_bump_sound
+      return if sound_bump.status.playing?
+
+      sound_bump.pitch = rand(0.9..1.1)
+      sound_bump.play
     end
 
     def draw(window : SF::RenderWindow)
