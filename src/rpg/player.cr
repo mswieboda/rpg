@@ -42,12 +42,13 @@ module RPG
       fps_factor = 30
       loops = true
 
-      [:walk_down, :walk_up, :walk_left, :walk_left_up].each_with_index do |name, row|
+      [:walk_down, :walk_up, :walk_left, :walk_left_up, :walk_left_down].each_with_index do |name, row|
         add_animation(name, row, frames, fps_factor, loops)
       end
 
       add_animation(:walk_right, 2, frames, fps_factor, loops, flip_horizontal: true)
       add_animation(:walk_right_up, 3, frames, fps_factor, loops, flip_horizontal: true)
+      add_animation(:walk_right_down, 4, frames, fps_factor, loops, flip_horizontal: true)
 
       animations.play(:walk_down)
     end
@@ -124,12 +125,16 @@ module RPG
       elsif dx < 0
         if dy < 0
           animations.play(:walk_left_up)
+        elsif dy > 0
+          animations.play(:walk_left_down)
         else
           animations.play(:walk_left)
         end
       elsif dx > 0
         if dy < 0
           animations.play(:walk_right_up)
+        elsif dy > 0
+          animations.play(:walk_right_down)
         else
           animations.play(:walk_right)
         end
