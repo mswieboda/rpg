@@ -17,7 +17,12 @@ module RPG::Levels
       @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file("./assets/bump.ogg"))
       text = "This is your overlord. Listen up! I am making this stupid video game \
 example for your lazy butt, I expect obedience. Also, I... I don't even... \
-I don't even know your name. What is your name, peasant?"
+I don't even know your name. What is your name, peasant? Actually, don't even tell me. \
+I'm going to guess it, because it's probably some really dumb common name. \
+Like a Matt, or a Ben. One of those names is really cool, and the other is also \
+somewhat cool. Benjamin or Matthew. I hope your middle names are \
+interesting at least. Let me think about it for a second, actually I don't \
+care anymore. So, what is your name?"
       @message = Message.new(text)
     end
 
