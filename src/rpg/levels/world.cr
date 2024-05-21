@@ -23,7 +23,7 @@ Like a Matt, or a Ben. One of those names is really cool, and the other is also 
 somewhat cool. Benjamin or Matthew. I hope your middle names are \
 interesting at least. Let me think about it for a second, actually I don't \
 care anymore. So, what is your name?"
-      @message = Message.new(text)
+      @message = Message.new(text, choices: ["yes", "no"])
     end
 
     def start
@@ -43,10 +43,13 @@ care anymore. So, what is your name?"
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
+      @message.update(keys)
+
+      return if @message.show?
+
       characters.each(&.update(frame_time))
       player.update(frame_time, keys)
       player_collision_checks
-      @message.update(keys)
     end
 
     def player_collision_checks
