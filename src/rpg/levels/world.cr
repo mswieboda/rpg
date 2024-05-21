@@ -1,12 +1,12 @@
 require "../level"
-require "../message"
+require "../dialog"
 
 module RPG::Levels
   class World < RPG::Level
     getter characters : Array(Character)
     getter sound_bump : SF::Sound
 
-    @message : Message
+    @dialog : Dialog
 
     TileColor = SF::Color.new(0, 128, 0)
 
@@ -15,15 +15,9 @@ module RPG::Levels
 
       @characters = [] of Character
       @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file("./assets/bump.ogg"))
-      text = "This is your overlord. Listen up! I am making this stupid video game \
-example for your lazy butt, I expect obedience. Also, I... I don't even... \
-I don't even know your name. What is your name, peasant? Actually, don't even tell me. \
-I'm going to guess it, because it's probably some really dumb common name. \
-Like a Matt, or a Ben. One of those names is really cool, and the other is also \
-somewhat cool. Benjamin or Matthew. I hope your middle names are \
-interesting at least. Let me think about it for a second, actually I don't \
-care anymore. So, what is your name?"
-      @message = Message.new(text, choices: ["yes", "no"])
+      text = "Listen up! I am making this stupid video game \
+example for your lazy butt, I expect obedience."
+      @dialog = Dialog.new(text, choices: ["tell me more", "okay"])
     end
 
     def start
@@ -38,18 +32,18 @@ care anymore. So, what is your name?"
       @characters << char1
       @characters << char2
 
-      @message.hide_reset
-      @message.show
+      @dialog.hide_reset
+      @dialog.show
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
-      @message.update(keys)
+      @dialog.update(keys)
 
-      if choice = @message.choice_selected
-        @message.next_page_or_hide
+      if choice = @dialog.choice_selected
+        puts ">>> choice: #{choice}"
       end
 
-      return if @message.show?
+      return if @dialog.show?
 
       characters.each(&.update(frame_time))
       player.update(frame_time, keys)
@@ -82,7 +76,7 @@ care anymore. So, what is your name?"
       draw_tiles(window)
       characters.each(&.draw(window))
       player.draw(window)
-      @message.draw(window)
+      @dialog.draw(window)
     end
 
     def draw_tiles(window)
