@@ -18,7 +18,7 @@ module RPG::Levels
       text = "This is your overlord. Listen up! I am making this stupid video game \
 example for your lazy butt, I expect obedience. Also, I... I don't even... \
 I don't even know your name. What is your name, peasant?"
-      @message = CenteredMessage.new(text)
+      @message = Message.new(text)
     end
 
     def start
