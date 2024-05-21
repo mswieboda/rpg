@@ -45,6 +45,10 @@ care anymore. So, what is your name?"
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
       @message.update(keys)
 
+      if choice = @message.choice_selected
+        @message.next_page_or_hide
+      end
+
       return if @message.show?
 
       characters.each(&.update(frame_time))
