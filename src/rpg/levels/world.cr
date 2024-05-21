@@ -1,9 +1,12 @@
 require "../level"
+require "../message"
 
 module RPG::Levels
   class World < RPG::Level
     getter characters : Array(Character)
     getter sound_bump : SF::Sound
+
+    @message : Message
 
     TileColor = SF::Color.new(0, 128, 0)
 
@@ -12,6 +15,10 @@ module RPG::Levels
 
       @characters = [] of Character
       @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file("./assets/bump.ogg"))
+      text = "This is your overlord. Listen up! I am making this stupid video game \
+example for your lazy butt, I expect obedience. Also, I... I don't even... \
+I don't even know your name. What is your name, peasant?"
+      @message = CenteredMessage.new(text)
     end
 
     def start
@@ -25,12 +32,16 @@ module RPG::Levels
 
       @characters << char1
       @characters << char2
+
+      @message.hide_reset
+      @message.show
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
       characters.each(&.update(frame_time))
       player.update(frame_time, keys)
       player_collision_checks
+      @message.update(keys)
     end
 
     def player_collision_checks
@@ -59,6 +70,7 @@ module RPG::Levels
       draw_tiles(window)
       characters.each(&.draw(window))
       player.draw(window)
+      @message.draw(window)
     end
 
     def draw_tiles(window)
