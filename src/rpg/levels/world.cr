@@ -38,7 +38,14 @@ module RPG::Levels
 
     def init_dialog_data
       text = "Listen up! I am making this stupid video game \
-        example for your lazy butt, I expect obedience."
+        example for your lazy butt, I expect obedience. \
+        But one can not just easily obtain my obedience, \
+        it is not so simple of a task. You must first dedicate \
+        your entire life to me. And then when I tell you to, \
+        go to the tallest tree in the forest. Then take out a \
+        knife and carve your initials into it. Circling with a \
+        heart. Then once the deed is done, hug the tree to seal \
+        the bond forever. I guess it's not that difficult."
       choices = [{key: "more", label: "tell me more"}, {key: "okay", label: "okay"}]
       more_choices = [{key: "okay", label: "fine"}]
       battle_choices = [{key: "yes", label: "yes"}, {key: "no", label: "no"}]
