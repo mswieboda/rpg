@@ -1,15 +1,18 @@
 require "./character"
+require "./direction"
 
 module RPG
   class Player < Character
     getter dx : Int32 | Float32
     getter dy : Int32 | Float32
+    getter direction : Direction
 
     def initialize(x = 0, y = 0)
       super
 
       @dx = 0
       @dy = 0
+      @direction = Direction::Down
     end
 
     def update(frame_time, keys : Keys)
@@ -34,6 +37,7 @@ module RPG
 
       return if dx == 0 && dy == 0
 
+      change_direction(dx, dy)
       animate_move(dx, dy)
       move(dx, dy)
     end
@@ -50,6 +54,20 @@ module RPG
       # screen collisions
       @dx = 0 if x + dx < 0 || x + dx > Screen.width
       @dy = 0 if y + dy < 0 || y + dy > Screen.height
+    end
+
+    def change_direction(dx, dy)
+      if dx.abs > 0 && dy.abs > 0
+        if dy < 0
+          @direction = dx > 0 ? Direction::UpRight : Direction::UpLeft
+        else
+          @direction = dx > 0 ? Direction::DownRight : Direction::DownLeft
+        end
+      elsif dy.abs > 0
+        @direction = dy < 0 ? Direction::Up : Direction::Down
+      elsif dx.abs > 0
+        @direction = dx > 0 ? Direction::Right : Direction::Left
+      end
     end
 
     def collision(char : Character) : Tuple(Bool, Bool)
