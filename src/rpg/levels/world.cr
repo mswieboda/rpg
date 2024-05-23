@@ -15,9 +15,7 @@ module RPG::Levels
 
       @characters = [] of Character
       @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file("./assets/bump.ogg"))
-      text = "Listen up! I am making this stupid video game \
-example for your lazy butt, I expect obedience."
-      @dialog = Dialog.new(text, choices: ["tell me more", "okay"])
+      @dialog = Dialog.new
     end
 
     def start
@@ -32,8 +30,23 @@ example for your lazy butt, I expect obedience."
       @characters << char1
       @characters << char2
 
+      init_dialog_data
+
       @dialog.hide_reset
-      @dialog.show
+      @dialog.show("first")
+    end
+
+    def init_dialog_data
+      text = "Listen up! I am making this stupid video game \
+        example for your lazy butt, I expect obedience."
+      choices = [{key: "more", label: "tell me more"}, {key: "okay", label: "okay"}]
+      more_choices = [{key: "okay", label: "fine"}]
+      battle_choices = [{key: "yes", label: "yes"}, {key: "no", label: "no"}]
+
+      data = @dialog.data
+      data["first"] = {message: text, choices: choices}
+      data["more"] = {message: "There is not much more to tell.", choices: more_choices}
+      data["okay"] = {message: "Do you want to start the battle?", choices: battle_choices}
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
