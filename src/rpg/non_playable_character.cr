@@ -11,13 +11,25 @@ module RPG
     end
 
     def area_radius
-      {size * 2, size * 2}
+      size * 2
+    end
+
+    def reset_area_triggered
+      @area_triggered = false
+    end
+
+    def check_area_triggered(char : Character)
+      dx = x - char.x
+      dy = y - char.y
+      distance = Math.sqrt(dx ** 2 + dy ** 2)
+
+      @area_triggered = true if distance <= area_radius
     end
 
     def update(frame_time)
       super
 
-      # check if area triggered?
+      reset_area_triggered
     end
 
     def draw(window : SF::RenderWindow)
@@ -27,14 +39,14 @@ module RPG
     end
 
     def draw_area(window)
-      ellipse = GSF::EllipseShape.new(area_radius)
-      ellipse.fill_color = SF::Color::Red
-      ellipse.outline_color = SF::Color::Red
-      ellipse.outline_thickness = 2
-      ellipse.origin = {area_radius[0], area_radius[1]}
-      ellipse.position = {x, y}
+      circle = SF::CircleShape.new(area_radius)
+      circle.fill_color = area_triggered? ? SF::Color::Transparent : SF::Color::Red
+      circle.outline_color = SF::Color::Red
+      circle.outline_thickness = 2
+      circle.origin = {area_radius, area_radius}
+      circle.position = {x, y}
 
-      window.draw(ellipse)
+      window.draw(circle)
     end
   end
 end

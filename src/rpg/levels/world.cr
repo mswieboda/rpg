@@ -1,11 +1,10 @@
-require "../character"
 require "../non_playable_character"
 require "../level"
 require "../dialog"
 
 module RPG::Levels
   class World < RPG::Level
-    getter characters : Array(Character)
+    getter npcs : Array(NonPlayableCharacter)
     getter sound_bump : SF::Sound
 
     @dialog : Dialog
@@ -16,7 +15,7 @@ module RPG::Levels
     def initialize(player)
       super(player, rows: 19, cols: 19, player_row: 9, player_col: 9)
 
-      @characters = [] of Character
+      @npcs = [] of NonPlayableCharacter
       @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file("./assets/bump.ogg"))
       @dialog = Dialog.new
     end
@@ -24,14 +23,14 @@ module RPG::Levels
     def start
       super
 
-      char1 = NonPlayableCharacter.new
-      char1.jump_to_tile(3, 5, tile_size)
+      npc1 = NonPlayableCharacter.new
+      npc1.jump_to_tile(3, 5, tile_size)
 
-      char2 = NonPlayableCharacter.new
-      char2.jump_to_tile(9, 1, tile_size)
+      npc2 = NonPlayableCharacter.new
+      npc2.jump_to_tile(9, 1, tile_size)
 
-      @characters << char1
-      @characters << char2
+      @npcs << npc1
+      @npcs << npc2
 
       if Debug
         init_dialog_data
@@ -63,14 +62,17 @@ module RPG::Levels
 
       return if @dialog.show?
 
-      characters.each(&.update(frame_time))
+      npcs.each(&.update(frame_time))
+
       player.update(frame_time, keys)
       player_collision_checks
+
+      npcs.each(&.check_area_triggered(player))
     end
 
     def player_collision_checks
-      characters.each do |char|
-        collision_x, collision_y = player.collision(char)
+      npcs.each do |npc|
+        collision_x, collision_y = player.collision(npc)
 
         if collision_x || collision_y
           player.move(-player.dx, 0) if collision_x
@@ -92,7 +94,7 @@ module RPG::Levels
 
     def draw(window : SF::RenderWindow)
       draw_tiles(window)
-      characters.each(&.draw(window))
+      npcs.each(&.draw(window))
       player.draw(window)
       @dialog.draw(window)
     end
