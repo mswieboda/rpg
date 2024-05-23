@@ -1,4 +1,6 @@
 require "./player"
+require "./non_playable_character"
+require "./dialog"
 
 module RPG
   class Level
@@ -7,10 +9,17 @@ module RPG
     getter cols : Int32
     getter player_row : Int32
     getter player_col : Int32
+    getter npcs : Array(NonPlayableCharacter)
+    getter sound_bump : SF::Sound
+    getter dialog : Dialog
 
     TileSize = 64
+    SoundBumpFile = "./assets/bump.ogg"
 
     def initialize(@player : Player, @rows = 9, @cols = 9, @player_row = 0, @player_col = 0)
+      @npcs = [] of NonPlayableCharacter
+      @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file(SoundBumpFile))
+      @dialog = Dialog.new
     end
 
     def tile_size
@@ -22,9 +31,60 @@ module RPG
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
+      dialog.update(keys)
+
+      if choice = dialog.choice_selected
+        puts ">>> choice: #{choice}"
+      end
+
+      return if dialog.show?
+
+      npcs.each(&.update(frame_time))
+
+      player.update(frame_time, keys)
+      player_collision_checks
+
+      npcs.each(&.check_area_triggered(player))
+    end
+
+    def player_collision_checks
+      npcs.each do |npc|
+        collision_x, collision_y = player.collision(npc)
+
+        if collision_x || collision_y
+          player.move(-player.dx, 0) if collision_x
+          player.move(0, -player.dy) if collision_y
+
+          play_bump_sound
+
+          break
+        end
+      end
+    end
+
+    def play_bump_sound
+      return if sound_bump.status.playing?
+
+      sound_bump.pitch = rand(0.9..1.1)
+      sound_bump.play
     end
 
     def draw(window : SF::RenderWindow)
+      draw_tiles(window)
+      npcs.each(&.draw(window))
+      player.draw(window)
+      dialog.draw(window)
+    end
+
+    def draw_tiles(window)
+      rows.times do |row|
+        cols.times do |col|
+          draw_tile(window, col * tile_size, row * tile_size)
+        end
+      end
+    end
+
+    def draw_tile(window, x, y)
     end
   end
 end
