@@ -1,3 +1,5 @@
+require "../character"
+require "../non_playable_character"
 require "../level"
 require "../dialog"
 
@@ -8,6 +10,7 @@ module RPG::Levels
 
     @dialog : Dialog
 
+    Debug = false
     TileColor = SF::Color.new(0, 128, 0)
 
     def initialize(player)
@@ -21,32 +24,27 @@ module RPG::Levels
     def start
       super
 
-      char1 = Character.new
+      char1 = NonPlayableCharacter.new
       char1.jump_to_tile(3, 5, tile_size)
 
-      char2 = Character.new
+      char2 = NonPlayableCharacter.new
       char2.jump_to_tile(9, 1, tile_size)
 
       @characters << char1
       @characters << char2
 
-      init_dialog_data
+      if Debug
+        init_dialog_data
 
-      @dialog.hide_reset
-      @dialog.show("first")
+        @dialog.hide_reset
+        @dialog.show("first")
+      end
     end
 
     def init_dialog_data
       text = "Listen up! I am making this stupid video game \
-        example for your lazy butt, I expect obedience. \
-        But one can not just easily obtain my obedience, \
-        it is not so simple of a task. You must first dedicate \
-        your entire life to me. And then when I tell you to, \
-        go to the tallest tree in the forest. Then take out a \
-        knife and carve your initials into it. Circling with a \
-        heart. Then once the deed is done, hug the tree to seal \
-        the bond forever. I guess it's not that difficult."
-      choices = [{key: "more", label: "tell me more"}, {key: "okay", label: "okay"}]
+        example for your lazy butt, I expect obedience."
+      choices = [{key: "shut up", label: "shut up"}, {key: "more", label: "tell me more"}, {key: "okay", label: "okay"}]
       more_choices = [{key: "okay", label: "fine"}]
       battle_choices = [{key: "yes", label: "yes"}, {key: "no", label: "no"}]
 
