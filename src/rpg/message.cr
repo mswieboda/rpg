@@ -8,12 +8,12 @@ module RPG
       3
     end
 
-    def test_sound_buffer
-      @@test_sound_buffer ||= SF::SoundBuffer.from_file("./assets/bump.ogg")
+    def bump_sound_buffer
+      @@bump_sound_buffer ||= SF::SoundBuffer.from_file("./assets/sounds/bump.ogg")
     end
 
     def next_page_sound_buffer
-      test_sound_buffer
+      bump_sound_buffer
     end
 
     def next_page_sound_pitch
@@ -21,7 +21,7 @@ module RPG
     end
 
     def next_choice_sound_buffer
-      test_sound_buffer
+      bump_sound_buffer
     end
 
     def next_choice_sound_pitch
@@ -29,7 +29,7 @@ module RPG
     end
 
     def prev_choice_sound_buffer
-      test_sound_buffer
+      bump_sound_buffer
     end
 
     def prev_choice_sound_pitch

@@ -9,8 +9,8 @@ module RPG
     SpriteWidth = 64
     SpriteHeight = 96
     Speed = 320
-    Sheet = "./assets/player.png"
-    ShadowSprite = "./assets/shadow.png"
+    Sheet = "./assets/sprites/player.png"
+    ShadowSprite = "./assets/sprites/shadow.png"
 
     BodyColor = SF::Color.new(217, 160, 102)
 

@@ -19,7 +19,7 @@ module RPG
     @dd = AllDialogData.new
 
     TileSize = 64
-    SoundBumpFile = "./assets/bump.ogg"
+    SoundBumpFile = "./assets/sounds/bump.ogg"
 
     def initialize(@player : Player, @rows = 9, @cols = 9, @player_row = 0, @player_col = 0)
       @npcs = [] of NonPlayableCharacter
