@@ -4,6 +4,8 @@ require "./dialog"
 
 module RPG
   class Level
+    alias AllDialogData = Hash(String, GSF::Dialog::Data)
+
     getter player : Player
     getter rows : Int32
     getter cols : Int32
@@ -12,6 +14,9 @@ module RPG
     getter npcs : Array(NonPlayableCharacter)
     getter sound_bump : SF::Sound
     getter dialog : Dialog
+    getter dialog_key : String
+
+    @dd = AllDialogData.new
 
     TileSize = 64
     SoundBumpFile = "./assets/bump.ogg"
@@ -20,6 +25,7 @@ module RPG
       @npcs = [] of NonPlayableCharacter
       @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file(SoundBumpFile))
       @dialog = Dialog.new
+      @dialog_key = ""
     end
 
     def tile_size
@@ -27,14 +33,26 @@ module RPG
     end
 
     def start
+      init_dialog_data
+      dialog.hide_reset
+
       player.jump_to_tile(player_row, player_col, tile_size)
+    end
+
+    def init_dialog_data
+    end
+
+    def dialog_show(key : String, message_key : String)
+      @dialog_key = key
+      dialog.data = @dd[key]
+      dialog.show(message_key)
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
       dialog.update(keys)
 
       if choice = dialog.choice_selected
-        puts ">>> choice: #{choice}"
+        puts ">>> dialog.choice_selected: #{dialog_key}.#{choice[:key]}"
       end
 
       return if dialog.show?
@@ -44,8 +62,16 @@ module RPG
       player.update(frame_time, keys)
       player_collision_checks
 
+      return unless dialog.hide?
+
       if npc = npcs.find(&.check_area_triggered(player))
         HUD.action = npc.action
+
+        if keys.just_pressed?([Keys::Enter, Keys::E, Keys::Space])
+          unless npc.dialog_key.empty?
+            dialog_show(npc.dialog_key, "start")
+          end
+        end
       end
     end
 

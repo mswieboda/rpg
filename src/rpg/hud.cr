@@ -4,9 +4,9 @@ module RPG
   class HUD
     @@action_text = SF::Text.new("", Font.default, 24)
 
-    Margin = 10
+    Margin = 4
 
-    TextColor = SF::Color::Green
+    TextColor = SF::Color::White
 
     def self.init
       @@action_text.fill_color = TextColor
