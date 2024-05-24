@@ -1,5 +1,6 @@
 require "./player"
 require "./non_playable_character"
+require "./sign"
 require "./dialog"
 
 module RPG
@@ -11,7 +12,7 @@ module RPG
     getter cols : Int32
     getter player_row : Int32
     getter player_col : Int32
-    getter npcs : Array(NonPlayableCharacter)
+    getter objs : Array(Collidable)
     getter sound_bump : SF::Sound
     getter dialog : Dialog
     getter dialog_key : String
@@ -22,7 +23,7 @@ module RPG
     SoundBumpFile = "./assets/sounds/bump.ogg"
 
     def initialize(@player : Player, @rows = 9, @cols = 9, @player_row = 0, @player_col = 0)
-      @npcs = [] of NonPlayableCharacter
+      @objs = [] of Collidable
       @sound_bump = SF::Sound.new(SF::SoundBuffer.from_file(SoundBumpFile))
       @dialog = Dialog.new
       @dialog_key = ""
@@ -30,6 +31,10 @@ module RPG
 
     def tile_size
       TileSize
+    end
+
+    def to_tile(col, row)
+      {col * tile_size, row * tile_size}
     end
 
     def start
@@ -50,8 +55,11 @@ module RPG
 
         dialog_data.as_h.each do |message_key, message_data|
           message = message_data["message"].as_s
-          choices = message_data["choices"].as_a.map do |choice|
-            {key: choice["key"].as_s, label: choice["label"].as_s}
+          choices = [] of GSF::Message::ChoiceData
+          if message_data.as_h.has_key?("choices")
+            choices = message_data["choices"].as_a.map do |choice|
+              {key: choice["key"].as_s, label: choice["label"].as_s}
+            end
           end
 
           @dd[key][message_key.as_s] = {message: message, choices: choices}
@@ -74,27 +82,27 @@ module RPG
 
       return if dialog.show?
 
-      npcs.each(&.update(frame_time))
+      objs.each(&.update(frame_time))
 
       player.update(frame_time, keys)
       player_collision_checks
 
       return unless dialog.hide?
 
-      if npc = npcs.find(&.check_area_triggered(player))
-        HUD.action = npc.action
+      if obj = objs.find(&.check_area_triggered?(player))
+        unless obj.dialog_key.empty?
+          HUD.action = obj.action
 
-        if keys.just_pressed?([Keys::Enter, Keys::E, Keys::Space])
-          unless npc.dialog_key.empty?
-            dialog_show(npc.dialog_key, "start")
+          if keys.just_pressed?([Keys::Enter, Keys::E, Keys::Space])
+            dialog_show(obj.dialog_key, "start")
           end
         end
       end
     end
 
     def player_collision_checks
-      npcs.each do |npc|
-        collision_x, collision_y = player.collision(npc)
+      objs.each do |obj|
+        collision_x, collision_y = player.collision(obj)
 
         if collision_x || collision_y
           player.move(-player.dx, 0) if collision_x
@@ -116,7 +124,7 @@ module RPG
 
     def draw(window : SF::RenderWindow)
       draw_tiles(window)
-      npcs.each(&.draw(window))
+      objs.each(&.draw(window))
       player.draw(window)
       dialog.draw(window)
     end

@@ -1,11 +1,10 @@
+require "./collidable"
+
 module RPG
-  class Character
-    getter x : Int32 | Float32
-    getter y : Int32 | Float32
+  abstract class Character < Collidable
     getter animations
     getter shadow_sprite : SF::Sprite
 
-    Size = 64
     SpriteWidth = 64
     SpriteHeight = 96
     Speed = 320
@@ -14,10 +13,8 @@ module RPG
 
     BodyColor = SF::Color.new(217, 160, 102)
 
-    def initialize(x = 0, y = 0)
-      # sprite size
-      @x = x
-      @y = y
+    def initialize(x = 0, y = 0, dialog_key = "")
+      super
 
       # animations
       idle = GSF::Animation.new(2, loops: false)
@@ -67,19 +64,9 @@ module RPG
       animations.add(name, animation, flip_horizontal: flip_horizontal)
     end
 
-    def size
-      Size
-    end
-
-    def collision_width
-      size
-    end
-
-    def collision_height
-      size / 2
-    end
-
     def update(frame_time)
+      super
+
       animations.update(frame_time)
     end
 
@@ -112,18 +99,6 @@ module RPG
     def move(dx, dy)
       @x += dx
       @y += dy
-    end
-
-    def jump(x, y)
-      @x = x
-      @y = y
-    end
-
-    def jump_to_tile(row, col, tile_size)
-      jump(
-        row * tile_size + (tile_size / 2).to_f32,
-        col * tile_size + (tile_size / 2).to_f32
-      )
     end
 
     def draw(window : SF::RenderWindow)

@@ -98,19 +98,19 @@ module RPG
       end
     end
 
-    def collision(char : Character) : Tuple(Bool, Bool)
+    def collision(obj : Collidable) : Tuple(Bool, Bool)
       x = @x - dx
       y = @y - dy
 
-      collides_x = x + dx - collision_width / 2 < char.x + char.collision_width / 2 &&
-        x + dx + collision_width / 2 > char.x - char.collision_width / 2 &&
-        y + collision_height / 2 > char.y - char.collision_height / 2 &&
-        y - collision_height / 2 < char.y + char.collision_height / 2
+      collides_x = x + dx - collision_width / 2 < obj.x + obj.collision_width / 2 &&
+        x + dx + collision_width / 2 > obj.x - obj.collision_width / 2 &&
+        y + collision_height / 2 > obj.y - obj.collision_height / 2 &&
+        y - collision_height / 2 < obj.y + obj.collision_height / 2
 
-      collides_y = y + dy - collision_height / 2 < char.y + char.collision_height / 2 &&
-        y + dy + collision_height / 2 > char.y - char.collision_height / 2 &&
-        x + collision_width / 2 > char.x - char.collision_width / 2 &&
-        x - collision_width / 2 < char.x + char.collision_width / 2
+      collides_y = y + dy - collision_height / 2 < obj.y + obj.collision_height / 2 &&
+        y + dy + collision_height / 2 > obj.y - obj.collision_height / 2 &&
+        x + collision_width / 2 > obj.x - obj.collision_width / 2 &&
+        x - collision_width / 2 < obj.x + obj.collision_width / 2
 
       {collides_x, collides_y}
     end

@@ -12,14 +12,9 @@ module RPG::Levels
     def start
       super
 
-      npc1 = NonPlayableCharacter.new(dialog_key: "npc1")
-      npc1.jump_to_tile(3, 5, tile_size)
-
-      npc2 = NonPlayableCharacter.new(dialog_key: "npc2")
-      npc2.jump_to_tile(9, 1, tile_size)
-
-      @npcs << npc1
-      @npcs << npc2
+      @objs << NonPlayableCharacter.new(*to_tile(3, 5), "npc1")
+      @objs << NonPlayableCharacter.new(*to_tile(9, 1), "npc2")
+      @objs << Sign.new(*to_tile(7, 7), "sign1")
     end
 
     def dialog_yml_file

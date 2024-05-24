@@ -28,3 +28,6 @@ npc2:
     choices:
       - key: yup
         label: Yup...
+sign1:
+  start:
+    message: This is a test of the RPG system. Beware of rocket explosions!
