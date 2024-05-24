@@ -12,11 +12,7 @@ build_and_test: clean test
 
 clean:
 
-ifeq ($(OS),Windows_NT)
-	@if exist ${BUILD_DIR} ( @echo cleaning... && @rmdir /S /Q ${BUILD_DIR}; )
-else
 	@if [ -d ${BUILD_DIR} ]; then env echo "cleaning..." && rm -r ${BUILD_DIR}; fi
-endif
 	@mkdir ${BUILD_DIR}
 
 build_test:
