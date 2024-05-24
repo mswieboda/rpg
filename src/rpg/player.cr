@@ -70,6 +70,34 @@ module RPG
       end
     end
 
+    def facing?(other_x, other_y)
+      if x > other_x
+        if y > other_y
+          direction.left_or_up?
+        elsif y < other_y
+          direction.left_or_down?
+        else
+          direction.left_any?
+        end
+      elsif x < other_x
+        if y > other_y
+          direction.right_or_up?
+        elsif y < other_y
+          direction.right_or_down?
+        else
+          direction.right_any?
+        end
+      else
+        if y > other_y
+          direction.up_any?
+        elsif y < other_y
+          direction.down_any?
+        else
+          true
+        end
+      end
+    end
+
     def collision(char : Character) : Tuple(Bool, Bool)
       x = @x - dx
       y = @y - dy

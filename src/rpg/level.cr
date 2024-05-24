@@ -44,7 +44,9 @@ module RPG
       player.update(frame_time, keys)
       player_collision_checks
 
-      npcs.each(&.check_area_triggered(player))
+      if npc = npcs.find(&.check_area_triggered(player))
+        HUD.action = npc.action
+      end
     end
 
     def player_collision_checks

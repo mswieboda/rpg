@@ -19,7 +19,7 @@ module RPG::Scene
 
       @player = Player.new
       @level = Levels::World.new(player)
-      @hud = HUD.new
+      HUD.init
     end
 
     def init
@@ -32,8 +32,8 @@ module RPG::Scene
         return
       end
 
+      HUD.update(frame_time)
       level.update(frame_time, keys, mouse, joysticks)
-      hud.update(frame_time)
     end
 
     def draw(window)
@@ -43,7 +43,7 @@ module RPG::Scene
 
       view.set_default_current
 
-      hud.draw(window)
+      HUD.draw(window)
     end
   end
 end

@@ -10,6 +10,10 @@ module RPG
       @area_triggered = false
     end
 
+    def action
+      "talk"
+    end
+
     def area_radius
       size * 2
     end
@@ -18,12 +22,13 @@ module RPG
       @area_triggered = false
     end
 
-    def check_area_triggered(char : Character)
-      dx = x - char.x
-      dy = y - char.y
+    def check_area_triggered(player : Player)
+      dx = x - player.x
+      dy = y - player.y
       distance = Math.sqrt(dx ** 2 + dy ** 2)
 
-      @area_triggered = true if distance <= area_radius
+      @area_triggered = true if distance <= area_radius && player.facing?(x, y)
+      @area_triggered
     end
 
     def update(frame_time)
