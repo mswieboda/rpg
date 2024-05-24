@@ -1,0 +1,30 @@
+npc1:
+  start:
+    message:
+      Listen up! I am making this stupid video game example for your lazy
+      butt, I expect obedience.
+    choices:
+      - key: shut_up
+        label: Shut up!
+      - key: more
+        label: Tell me more
+      - key: battle
+        label: Okay
+  more:
+    message: There is not much more to tell.
+    choices:
+      - key: battle
+        label: fine
+  battle:
+    message: Do you want to start the battle?
+    choices:
+      - key: battle_yes
+        label: "Yes"
+      - key: battle_no
+        label: "No"
+npc2:
+  start:
+    message: Hi, what a nice day it is today, huh?
+    choices:
+      - key: yup
+        label: Yup...

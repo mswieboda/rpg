@@ -39,7 +39,24 @@ module RPG
       player.jump_to_tile(player_row, player_col, tile_size)
     end
 
+    def dialog_yml_file
+      "./assets/dialog/level.yml"
+    end
+
     def init_dialog_data
+      data = YAML.parse(File.read(dialog_yml_file))
+      data.as_h.each do |key, dialog_data|
+        @dd[key.as_s] = GSF::Dialog::Data.new
+
+        dialog_data.as_h.each do |message_key, message_data|
+          message = message_data["message"].as_s
+          choices = message_data["choices"].as_a.map do |choice|
+            {key: choice["key"].as_s, label: choice["label"].as_s}
+          end
+
+          @dd[key][message_key.as_s] = {message: message, choices: choices}
+        end
+      end
     end
 
     def dialog_show(key : String, message_key : String)
