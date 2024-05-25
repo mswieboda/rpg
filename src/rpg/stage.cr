@@ -10,7 +10,7 @@ module RPG
       super(window)
 
       @start = Scene::Start.new
-      @main = Scene::Main.new(window)
+      @main = Scene::Main.new
 
       @scene = start
     end

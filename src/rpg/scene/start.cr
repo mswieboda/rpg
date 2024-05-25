@@ -9,6 +9,7 @@ module RPG::Scene
       @start_scene = nil
       @items = GSF::MenuItems.new(
         font: Font.default,
+        size: 32,
         items: ["start", "exit"],
         initial_focused_index: 0
       )
@@ -20,6 +21,7 @@ module RPG::Scene
       @start_scene = nil
       @items = GSF::MenuItems.new(
         font: Font.default,
+        size: 32,
         items: ["start", "exit"],
         initial_focused_index: 0
       )

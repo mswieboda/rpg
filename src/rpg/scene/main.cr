@@ -5,17 +5,12 @@ require "../hud"
 
 module RPG::Scene
   class Main < GSF::Scene
-    getter view : GSF::View
     getter hud
     getter player
     getter level : Level
 
-    def initialize(window)
+    def initialize
       super(:main)
-
-      @view = GSF::View.from_default(window).dup
-
-      view.zoom(1 / Screen.scaling_factor)
 
       @player = Player.new
       @level = Levels::World.new(player)
@@ -37,12 +32,7 @@ module RPG::Scene
     end
 
     def draw(window)
-      view.set_current
-
       level.draw(window)
-
-      view.set_default_current
-
       HUD.draw(window)
     end
   end
