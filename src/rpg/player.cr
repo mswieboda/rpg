@@ -27,10 +27,10 @@ module RPG
       @dx = 0
       @dy = 0
 
-      @dy -= 1 if keys.pressed?([Keys::W]) || joysticks.left_stick_up? || joysticks.d_pad_up?
-      @dx -= 1 if keys.pressed?([Keys::A]) || joysticks.left_stick_left? || joysticks.d_pad_left?
-      @dy += 1 if keys.pressed?([Keys::S]) || joysticks.left_stick_down? || joysticks.d_pad_down?
-      @dx += 1 if keys.pressed?([Keys::D]) || joysticks.left_stick_right? || joysticks.d_pad_right?
+      @dy -= 1 if keys.pressed?([Keys::W]) || joysticks.left_stick_moved_up? || joysticks.d_pad_moved_up?
+      @dx -= 1 if keys.pressed?([Keys::A]) || joysticks.left_stick_moved_left? || joysticks.d_pad_moved_left?
+      @dy += 1 if keys.pressed?([Keys::S]) || joysticks.left_stick_moved_down? || joysticks.d_pad_moved_down?
+      @dx += 1 if keys.pressed?([Keys::D]) || joysticks.left_stick_moved_right? || joysticks.d_pad_moved_right?
 
       return if dx == 0 && dy == 0
 
