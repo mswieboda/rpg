@@ -22,7 +22,7 @@ module RPG::Scene
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
-      if keys.just_pressed?(Keys::Escape)
+      if keys.just_pressed?(Keys::Escape) || joysticks.just_pressed?(Joysticks::Back)
         @exit = true
         return
       end

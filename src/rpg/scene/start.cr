@@ -30,14 +30,14 @@ module RPG::Scene
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
       items.update(frame_time, keys, mouse)
 
-      if keys.just_pressed?([Keys::Space, Keys::Enter])
+      if keys.just_pressed?(items.keys_select) || joysticks.just_pressed?([Joysticks::A, Joysticks::Start])
         case items.focused_label
         when "start"
           @start_scene = :main
         when "exit"
           @exit = true
         end
-      elsif keys.just_pressed?(Keys::Escape)
+      elsif keys.just_pressed?(Keys::Escape) || joysticks.just_pressed?(Joysticks::Back)
         @exit = true
       end
     end

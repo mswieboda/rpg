@@ -7,6 +7,8 @@ module RPG
     getter dy : Int32 | Float32
     getter direction : Direction
 
+    AxisThreshold = 10
+
     def initialize(x = 0, y = 0)
       super
 
@@ -15,20 +17,20 @@ module RPG
       @direction = Direction::Down
     end
 
-    def update(frame_time, keys : Keys)
-      update_movement(frame_time, keys)
+    def update(frame_time, keys : Keys, joysticks : Joysticks)
+      update_movement(frame_time, keys, joysticks)
 
       super(frame_time)
     end
 
-    def update_movement(frame_time, keys : Keys)
+    def update_movement(frame_time, keys : Keys, joysticks : Joysticks)
       @dx = 0
       @dy = 0
 
-      @dy -= 1 if keys.pressed?([Keys::W])
-      @dx -= 1 if keys.pressed?([Keys::A])
-      @dy += 1 if keys.pressed?([Keys::S])
-      @dx += 1 if keys.pressed?([Keys::D])
+      @dy -= 1 if keys.pressed?([Keys::W]) || joysticks.left_stick_up? || joysticks.d_pad_up?
+      @dx -= 1 if keys.pressed?([Keys::A]) || joysticks.left_stick_left? || joysticks.d_pad_left?
+      @dy += 1 if keys.pressed?([Keys::S]) || joysticks.left_stick_down? || joysticks.d_pad_down?
+      @dx += 1 if keys.pressed?([Keys::D]) || joysticks.left_stick_right? || joysticks.d_pad_right?
 
       return if dx == 0 && dy == 0
 

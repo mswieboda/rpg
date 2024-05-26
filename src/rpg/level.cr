@@ -74,7 +74,7 @@ module RPG
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
-      dialog.update(keys)
+      dialog.update(keys, joysticks)
 
       if choice = dialog.choice_selected
         puts ">>> dialog.choice_selected: #{dialog_key}.#{choice[:key]}"
@@ -84,7 +84,7 @@ module RPG
 
       objs.each(&.update(frame_time))
 
-      player.update(frame_time, keys)
+      player.update(frame_time, keys, joysticks)
       player_collision_checks
 
       return unless dialog.hide?
@@ -93,7 +93,7 @@ module RPG
         unless obj.dialog_key.empty?
           HUD.action = obj.action
 
-          if keys.just_pressed?([Keys::Enter, Keys::E, Keys::Space])
+          if keys.just_pressed?([Keys::Enter, Keys::E, Keys::Space]) || joysticks.just_pressed?(Joysticks::A)
             dialog_show(obj.dialog_key, "start")
           end
         end
