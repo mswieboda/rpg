@@ -27,18 +27,15 @@ module RPG::Scene
         return
       end
 
-      update_bag_ui(keys, joysticks)
+      BagUI.update(keys, joysticks) unless level.dialog.show?
 
-      return if BagUI.shown?
+      if BagUI.show?
+        HUD.clear_action
+        return
+      end
 
       HUD.update(frame_time)
       level.update(frame_time, keys, mouse, joysticks)
-    end
-
-    def update_bag_ui(keys, joysticks)
-      return unless keys.just_pressed?([Keys::B, Keys::Tab]) || joysticks.just_pressed?([Joysticks::Back])
-
-      BagUI.shown? ? BagUI.hide : BagUI.show
     end
 
     def draw(window)

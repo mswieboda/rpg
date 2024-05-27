@@ -16,7 +16,10 @@ module RPG
     CellOutlineColor = SF::Color.new(102, 102, 102, 102)
     CellOutlineThickness = 2
 
-    @@shown = false
+    OpenBagKeys = [Keys::B, Keys::Tab]
+    OpenBagJoystickButtons = [Joysticks::Back]
+
+    @@show = false
     @@width : Float32?
     @@height : Float32?
     @@x : Float32?
@@ -26,16 +29,22 @@ module RPG
     @@grid_cell_size : Float32?
     @@grid_cell_rect : SF::RectangleShape?
 
-    def self.shown?
-      @@shown
+    def self.update(keys, joysticks)
+      return unless keys.just_pressed?(OpenBagKeys) || joysticks.just_pressed?(OpenBagJoystickButtons)
+
+      show? ? hide : show
+    end
+
+    def self.show?
+      @@show
     end
 
     def self.show
-      @@shown = true
+      @@show = true
     end
 
     def self.hide
-      @@shown = false
+      @@show = false
     end
 
     def self.width
@@ -104,7 +113,7 @@ module RPG
     end
 
     def self.draw(window : SF::RenderWindow, bag : Bag)
-      return unless shown?
+      return unless show?
 
       window.draw(background_rect)
       window.draw(title_text)
