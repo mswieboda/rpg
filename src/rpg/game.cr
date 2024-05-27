@@ -5,16 +5,7 @@ module RPG
     getter manager
 
     def initialize
-      style = SF::Style::None
-
-      {% if flag?(:linux) %}
-        mode.width -= 50
-        mode.height -= 100
-
-        style = SF::Style::Default
-      {% end %}
-
-      super(title: "RPG", style: style)
+      super(title: "RPG", style: SF::Style::Fullscreen)
 
       @stage = Stage.new(window)
     end
