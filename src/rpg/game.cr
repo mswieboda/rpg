@@ -5,7 +5,7 @@ module RPG
     getter manager
 
     def initialize
-      super(title: "RPG", style: SF::Style::Fullscreen)
+      super(title: "RPG")
 
       @stage = Stage.new(window)
     end
