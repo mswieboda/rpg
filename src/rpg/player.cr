@@ -1,11 +1,13 @@
 require "./character"
 require "./direction"
+require "./bag"
 
 module RPG
   class Player < Character
     getter dx : Int32 | Float32
     getter dy : Int32 | Float32
     getter direction : Direction
+    getter bag : Bag
 
     AxisThreshold = 10
 
@@ -15,23 +17,32 @@ module RPG
       @dx = 0
       @dy = 0
       @direction = Direction::Down
+      @bag = Bag.new
     end
 
     def update(frame_time, keys : Keys, joysticks : Joysticks)
-      update_movement(frame_time, keys, joysticks)
+      update_movement_dx_input(keys, joysticks)
+      update_movement_dy_input(keys, joysticks)
+      update_movement(frame_time)
 
       super(frame_time)
     end
 
-    def update_movement(frame_time, keys : Keys, joysticks : Joysticks)
+    def update_movement_dx_input(keys, joysticks)
       @dx = 0
+
+      @dx -= 1 if keys.pressed?([Keys::A]) || joysticks.left_stick_moved_left? || joysticks.d_pad_moved_left?
+      @dx += 1 if keys.pressed?([Keys::D]) || joysticks.left_stick_moved_right? || joysticks.d_pad_moved_right?
+    end
+
+    def update_movement_dy_input(keys, joysticks)
       @dy = 0
 
       @dy -= 1 if keys.pressed?([Keys::W]) || joysticks.left_stick_moved_up? || joysticks.d_pad_moved_up?
-      @dx -= 1 if keys.pressed?([Keys::A]) || joysticks.left_stick_moved_left? || joysticks.d_pad_moved_left?
       @dy += 1 if keys.pressed?([Keys::S]) || joysticks.left_stick_moved_down? || joysticks.d_pad_moved_down?
-      @dx += 1 if keys.pressed?([Keys::D]) || joysticks.left_stick_moved_right? || joysticks.d_pad_moved_right?
+    end
 
+    def update_movement(frame_time)
       return if dx == 0 && dy == 0
 
       @dx, @dy = with_direction_and_speed(frame_time, dx, dy)

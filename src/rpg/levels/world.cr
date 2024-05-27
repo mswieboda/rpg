@@ -24,8 +24,8 @@ module RPG::Levels
     def draw_tile(window, x, y)
       rect = SF::RectangleShape.new({tile_size, tile_size})
       rect.fill_color = TileColor
-      rect.outline_color = SF::Color::Black
-      rect.outline_thickness = 2
+      rect.outline_color = SF::Color.new(17, 17, 17, 51)
+      rect.outline_thickness = -1
       rect.position = {x, y}
 
       window.draw(rect)
