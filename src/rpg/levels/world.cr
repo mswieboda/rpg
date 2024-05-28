@@ -22,11 +22,9 @@ module RPG::Levels
       player.bag.add("orange")
       player.bag.add("orange")
       player.bag.add("orange")
-      player.bag.add("wrench")
-      player.bag.add("ladder")
-      player.bag.add("key")
-      player.bag.add("key")
-      player.bag.add("key")
+      player.bag.add("pepperoni_pizza")
+      player.bag.add("pepperoni_pizza")
+      player.bag.add("pepperoni_pizza")
     end
 
     def dialog_yml_file

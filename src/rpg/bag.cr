@@ -1,9 +1,9 @@
-require "./bag_item"
+require "./item"
 
 module RPG
   class Bag
-    alias Items = Hash(String, BagItem)
-    getter items : Hash(String, BagItem)
+    alias Items = Hash(String, Item)
+    getter items : Hash(String, Item)
 
     def initialize
       @items = Items.new
@@ -13,12 +13,12 @@ module RPG
       if items.has_key?(key)
         items[key].add
       else
-        items[key] = BagItem.get(key)
+        items[key] = Item.get(key)
       end
     end
 
     def remove(name : String)
-      key = BagItem.key(name)
+      key = Item.key(name)
 
       if items.has_key?(key)
         items[key].remove

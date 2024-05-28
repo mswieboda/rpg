@@ -1,5 +1,5 @@
 module RPG
-  class BagItem
+  class Item
     getter name : String
     getter key : String
     getter amount : Int32
@@ -10,16 +10,18 @@ module RPG
     end
 
     def self.init_data
-      @@item_data = YAML.parse(File.read("./assets/data/items/bag_items.yml"))
+      @@item_data = YAML.parse(File.read("./assets/data/items.yml"))
     end
 
     def self.get(key : String)
+      name = key.gsub('_', ' ').titleize
+
       if item_data = @@item_data
         unless item_data.as_h.has_key?(key)
-          return BagItem.new(key, key)
+          return new(key, name)
         end
       else
-        return BagItem.new(key, key)
+        return new(key, name)
       end
 
       data = item_data[key]
