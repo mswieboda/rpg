@@ -9,13 +9,11 @@ module RPG
       @items = Items.new
     end
 
-    def add(name : String)
-      key = BagItem.key(name)
-
+    def add(key : String)
       if items.has_key?(key)
         items[key].add
       else
-        items[key] = BagItem.new(name)
+        items[key] = BagItem.get(key)
       end
     end
 

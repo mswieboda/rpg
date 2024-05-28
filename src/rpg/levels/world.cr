@@ -15,10 +15,22 @@ module RPG::Levels
       @objs << NonPlayableCharacter.new(*to_tile(3, 5), "npc1")
       @objs << NonPlayableCharacter.new(*to_tile(9, 1), "npc2")
       @objs << Sign.new(*to_tile(7, 7), "sign1")
+
+      player.bag.add("apple")
+      player.bag.add("apple")
+      player.bag.add("banana")
+      player.bag.add("orange")
+      player.bag.add("orange")
+      player.bag.add("orange")
+      player.bag.add("wrench")
+      player.bag.add("ladder")
+      player.bag.add("key")
+      player.bag.add("key")
+      player.bag.add("key")
     end
 
     def dialog_yml_file
-      "./assets/dialog/world.yml"
+      "./assets/data/dialog/world.yml"
     end
 
     def draw_tile(window, x, y)

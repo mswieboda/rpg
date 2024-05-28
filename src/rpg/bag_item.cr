@@ -2,30 +2,73 @@ module RPG
   class BagItem
     getter name : String
     getter key : String
-    getter count : Int32
+    getter amount : Int32
+    getter fill_color : SF::Color
 
-    def initialize(@name : String, @key : String = "")
-      if @key.empty?
-        @key = self.class.key(@name)
-      end
-
-      @count = 1
+    def initialize(@key : String, @name : String, @fill_color = SF::Color.new)
+      @amount = 1
     end
 
-    def self.key(name : String)
-      name.underscore
+    def self.init_data
+      @@item_data = YAML.parse(File.read("./assets/data/items/bag_items.yml"))
+    end
+
+    def self.get(key : String)
+      if item_data = @@item_data
+        unless item_data.as_h.has_key?(key)
+          return BagItem.new(key, key)
+        end
+      else
+        return BagItem.new(key, key)
+      end
+
+      data = item_data[key]
+
+      name = ""
+
+      if data.as_h.has_key?("name")
+        name = data["name"].as_s
+      end
+
+      fill_color = SF::Color.new
+
+      if data.as_h.has_key?("fill_color")
+        red = 0
+        green = 0
+        blue = 0
+
+        if data["fill_color"].as_h.has_key?("red")
+          red = data["fill_color"]["red"].as_i
+        end
+
+        if data["fill_color"].as_h.has_key?("green")
+          green = data["fill_color"]["green"].as_i
+        end
+
+        if data["fill_color"].as_h.has_key?("blue")
+          blue = data["fill_color"]["blue"].as_i
+        end
+
+        fill_color = SF::Color.new(red, green, blue)
+      end
+
+      new(
+        key: key,
+        name: name,
+        fill_color: fill_color
+      )
     end
 
     def add
-      @count += 1
+      @amount += 1
     end
 
     def remove
-      @count -= 1
+      @amount -= 1
     end
 
     def empty?
-      count <= 0
+      amount <= 0
     end
   end
 end

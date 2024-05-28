@@ -1,0 +1,14 @@
+apple:
+  name: Apple
+  fill_color:
+    red: 160
+banana:
+  name: Banana
+  fill_color:
+    red: 160
+    green: 160
+orange:
+  name: Orange
+  fill_color:
+    red: 160
+    green: 80

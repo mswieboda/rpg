@@ -2,6 +2,7 @@ require "../player"
 require "../level"
 require "../levels/world"
 require "../hud"
+require "../bag_item"
 require "../bag_ui"
 
 module RPG::Scene
@@ -18,6 +19,7 @@ module RPG::Scene
     end
 
     def init
+      BagItem.init_data
       @level.start
     end
 

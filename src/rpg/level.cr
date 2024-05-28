@@ -45,7 +45,7 @@ module RPG
     end
 
     def dialog_yml_file
-      "./assets/dialog/level.yml"
+      "./assets/data/dialog/level.yml"
     end
 
     def init_dialog_data
