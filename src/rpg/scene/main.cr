@@ -16,6 +16,10 @@ module RPG::Scene
       @player = Player.new
       @level = Levels::World.new(player)
       HUD.init
+
+      @text = GSF::StyledText.new("testing, [s=ibu oc=#00ff0066 fc=#0000ff]test[/s] and then [s= fc=#ff0000]something[/s] else!", Font.default, 16)
+      @text.outline_thickness = 1
+      @text.position = {300, 300}
     end
 
     def init
@@ -44,6 +48,8 @@ module RPG::Scene
       level.draw(window)
       HUD.draw(window)
       BagUI.draw(window, player.bag)
+
+      window.draw(@text)
     end
   end
 end
