@@ -14,10 +14,11 @@ development_dependencies:
 
 dependencies:
   game_sf:
-    github: mswieboda/game_sf
-    version: 0.29.1
-    # path: ../game_sf
+    # github: mswieboda/game_sf
+    # branch: styled-message-tmp
+    path: ../game_sf
+    version: 0.30.0
 
-crystal: '>= 1.12.1'
+crystal: '>= 1.13.2'
 
 license: MIT
