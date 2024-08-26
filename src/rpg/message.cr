@@ -35,5 +35,9 @@ module RPG
     def prev_choice_sound_pitch
       3
     end
+
+    def type_duration
+      25.milliseconds
+    end
   end
 end

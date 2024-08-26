@@ -1,7 +1,7 @@
 npc1:
   start:
     message:
-      Listen up! I am making this stupid video game example for your lazy
+      Listen up! I am making this stupid [s=b fc=#ff0000]video game[/s] example for your lazy
       butt, I expect obedience.
     choices:
       - key: shut_up
@@ -14,9 +14,9 @@ npc1:
     message: There is not much more to tell.
     choices:
       - key: battle
-        label: fine
+        label: Fine
   battle:
-    message: Do you want to start the battle?
+    message: Do you want to start the [s=b fc=#ff0000]battle[/s]?
     choices:
       - key: battle_yes
         label: "Yes"
@@ -30,4 +30,4 @@ npc2:
         label: Yup...
 sign1:
   start:
-    message: This is a test of the RPG system. Beware of rocket explosions!
+    message: This is a test of the [s=b fc=#ff0000]RPG system[/s]. Beware of [s=b fc=#ff0000]rocket explosions[/s]!
