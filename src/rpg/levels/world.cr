@@ -6,7 +6,7 @@ module RPG::Levels
     TileColor = SF::Color.new(0, 63, 0)
 
     def initialize(player)
-      super(player, rows: 19, cols: 19, player_row: 9, player_col: 9)
+      super(player, rows: 19, cols: 29, player_row: 9, player_col: 9)
     end
 
     def start

@@ -33,6 +33,14 @@ module RPG
       TileSize
     end
 
+    def width
+      tile_size * cols
+    end
+
+    def height
+      tile_size * rows
+    end
+
     def to_tile(col, row)
       {col * tile_size, row * tile_size}
     end
@@ -84,7 +92,7 @@ module RPG
 
       objs.each(&.update(frame_time))
 
-      player.update(frame_time, keys, joysticks)
+      player.update(frame_time, keys, joysticks, width, height)
       player_collision_checks
 
       return unless dialog.hide?

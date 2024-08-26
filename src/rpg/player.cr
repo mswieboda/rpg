@@ -22,10 +22,10 @@ module RPG
       @moved = false
     end
 
-    def update(frame_time, keys : Keys, joysticks : Joysticks)
+    def update(frame_time, keys : Keys, joysticks : Joysticks, level_width, level_height)
       update_movement_dx_input(keys, joysticks)
       update_movement_dy_input(keys, joysticks)
-      update_movement(frame_time)
+      update_movement(frame_time, level_width, level_height)
 
       super(frame_time)
     end
@@ -44,37 +44,34 @@ module RPG
       @dy += 1 if keys.pressed?([Keys::S]) || joysticks.left_stick_moved_down? || joysticks.d_pad_moved_down?
     end
 
-    def update_movement(frame_time)
+    def update_movement(frame_time, level_width, level_height)
       @moved = false
 
       return if dx == 0 && dy == 0
 
-      @dx, @dy = with_direction_and_speed(frame_time, dx, dy)
-      move_with_level(dx, dy)
+      update_dx_with_direction_and_speed(frame_time)
+      move_with_level(level_width, level_height)
 
       return if dx == 0 && dy == 0
 
       @moved = true
-      change_direction(dx, dy)
+      change_direction
       animate_move(dx, dy)
       move(dx, dy)
     end
 
-    def with_direction_and_speed(frame_time, dx, dy)
+    def update_dx_with_direction_and_speed(frame_time)
       directional_speed = dx != 0 && dy != 0 ? Speed / 1.4142 : Speed
-      dx *= (directional_speed * frame_time).to_f32
-      dy *= (directional_speed * frame_time).to_f32
-
-      {dx, dy}
+      @dx *= (directional_speed * frame_time).to_f32
+      @dy *= (directional_speed * frame_time).to_f32
     end
 
-    def move_with_level(dx, dy)
-      # screen collisions
-      @dx = 0 if x + dx < 0 || x + dx > Screen.width
-      @dy = 0 if y + dy < 0 || y + dy > Screen.height
+    def move_with_level(level_width, level_height)
+      @dx = 0 if x + dx < 0 || x + dx > level_width
+      @dy = 0 if y + dy < 0 || y + dy > level_height
     end
 
-    def change_direction(dx, dy)
+    def change_direction
       if dx.abs > 0 && dy.abs > 0
         if dy < 0
           @direction = dx > 0 ? Direction::UpRight : Direction::UpLeft

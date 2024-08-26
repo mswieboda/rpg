@@ -10,6 +10,8 @@ module RPG::Scene
     getter player
     getter level : Level
 
+    CenteredViewPadding = 128
+
     def initialize
       super(:main)
 
@@ -44,7 +46,20 @@ module RPG::Scene
 
     def view_movement
       view = Screen.view
-      view.center = {player.x, player.y}
+
+      cx = player.x
+      cy = player.y
+      w = Screen.width / 2 - CenteredViewPadding
+      h = Screen.height / 2 - CenteredViewPadding
+
+      cx = w if cx < w
+      cy = h if cy < h
+
+      cx = level.width - w if cx > level.width - w
+      cy = level.height - h if cy > level.height - h
+
+      view.center = {cx, cy}
+
       Screen.window.view = view
     end
 
