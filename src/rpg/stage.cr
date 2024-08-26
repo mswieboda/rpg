@@ -6,8 +6,8 @@ module RPG
     getter start
     getter main
 
-    def initialize(window : SF::RenderWindow)
-      super(window)
+    def initialize
+      super
 
       @start = Scene::Start.new
       @main = Scene::Main.new

@@ -21,6 +21,7 @@ module RPG::Scene
     def init
       Item.init_data
       @level.start
+      view_movement
     end
 
     def update(frame_time, keys : Keys, mouse : Mouse, joysticks : Joysticks)
@@ -38,6 +39,13 @@ module RPG::Scene
 
       HUD.update(frame_time)
       level.update(frame_time, keys, mouse, joysticks)
+      view_movement if player.moved?
+    end
+
+    def view_movement
+      view = Screen.view
+      view.center = {player.x, player.y}
+      Screen.window.view = view
     end
 
     def draw(window)

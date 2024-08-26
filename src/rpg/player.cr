@@ -8,6 +8,7 @@ module RPG
     getter dy : Int32 | Float32
     getter direction : Direction
     getter bag : Bag
+    getter? moved
 
     AxisThreshold = 10
 
@@ -18,6 +19,7 @@ module RPG
       @dy = 0
       @direction = Direction::Down
       @bag = Bag.new
+      @moved = false
     end
 
     def update(frame_time, keys : Keys, joysticks : Joysticks)
@@ -43,6 +45,8 @@ module RPG
     end
 
     def update_movement(frame_time)
+      @moved = false
+
       return if dx == 0 && dy == 0
 
       @dx, @dy = with_direction_and_speed(frame_time, dx, dy)
@@ -50,6 +54,7 @@ module RPG
 
       return if dx == 0 && dy == 0
 
+      @moved = true
       change_direction(dx, dy)
       animate_move(dx, dy)
       move(dx, dy)

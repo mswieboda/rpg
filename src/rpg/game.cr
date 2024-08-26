@@ -7,7 +7,7 @@ module RPG
     def initialize
       super(title: "RPG", target_height: 1080)
 
-      @stage = Stage.new(window)
+      @stage = Stage.new
     end
   end
 end

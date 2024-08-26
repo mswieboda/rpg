@@ -23,6 +23,8 @@ module RPG
 
     def self.update(frame_time)
       clear_action
+
+      @@action_text.position = {Screen.x + Margin, Screen.y + Margin}
     end
 
     def self.draw(window : SF::RenderWindow)
