@@ -5,6 +5,8 @@
 [install SFML](https://github.com/oprypin/crsfml#install-sfml) 2.5.1
 
 if on a mac, you can use https://github.com/mswieboda/homebrew-sfml for `brew install mswieboda/homebrew-sfml/sfml@2.5`
+if on mac silicon, you'll need to build SFML 2.5.1 from source following: https://www.sfml-dev.org/tutorials/2.5/compile-with-cmake.php
+(will update here with correct instructions)
 
 ```
 shards install
