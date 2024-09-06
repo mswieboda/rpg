@@ -45,22 +45,28 @@ module RPG::Scene
     end
 
     def view_movement
-      view = Screen.view
+      view = Screen.view.dup
+
+      # puts ">>> view_movement pre  c: [#{view.center.x}, #{view.center.y}]" # s: [#{Screen.width}, #{Screen.height}]"
 
       cx = player.x
-      cy = player.y
-      w = Screen.width / 2 - CenteredViewPadding
-      h = Screen.height / 2 - CenteredViewPadding
+      cy = player.y + Screen.height / 4
 
-      cx = w if cx < w
-      cy = h if cy < h
+      # TODO: this is broken
+      # w = Screen.width / 2 - CenteredViewPadding
+      # h = Screen.height / 4 - CenteredViewPadding
 
-      cx = level.width - w if cx > level.width - w
-      cy = level.height - h if cy > level.height - h
+      # cx = w if cx < w
+      # cy = h if cy < h
+
+      # cx = level.width - w if cx > level.width - w
+      # cy = level.height - h if cy > level.height - h
 
       view.center = {cx, cy}
 
-      Screen.window.view = view
+      # puts ">>> view_movement post c: [#{view.center.x}, #{view.center.y}]"
+
+      Screen.view = view
     end
 
     def draw(window)
