@@ -5,7 +5,7 @@ module RPG
     getter manager
 
     def initialize
-      super(title: "RPG", target_height: 1080)
+      super(title: "RPG")
 
       @stage = Stage.new
     end
