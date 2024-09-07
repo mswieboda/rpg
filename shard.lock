@@ -10,5 +10,5 @@ shards:
 
   game_sf:
     git: https://github.com/mswieboda/game_sf.git
-    version: 0.32.0+git.commit.f556a8e1bef09990ce6615183c503bdd0d1ed352
+    version: 0.33.1
 

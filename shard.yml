@@ -15,9 +15,7 @@ development_dependencies:
 dependencies:
   game_sf:
     github: mswieboda/game_sf
-    branch: sfml-2.6.x
-    # version: 0.32.0
-    # path: ../game_sf
+    version: 0.33.1
 
 crystal: '>= 1.13.2'
 
